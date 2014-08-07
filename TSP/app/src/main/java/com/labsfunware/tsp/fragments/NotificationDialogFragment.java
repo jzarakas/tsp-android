@@ -23,12 +23,12 @@ public class NotificationDialogFragment extends DialogFragment {
         builder.setMessage("Which do you need?")
                 .setPositiveButton("Toilet", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                       setupNotification("toilet");
+                       setupNotification(C.ALARM_TYPE_TOILET);
                     }
                 })
                 .setNegativeButton("Urinal", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        setupNotification("Urinal");
+                        setupNotification(C.ALARM_TYPE_URINAL);
                     }
                 });
         // Create the AlertDialog object and return it

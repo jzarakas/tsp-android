@@ -64,6 +64,7 @@ public class AlarmController extends BroadcastReceiver {
             public void success(BoardStatus boardStatus, Response response) {
 
                 Log.d("ANOTIF", "got api response + parsed");
+                Log.d("ANOTIF", "alarmType - " + alarmType + " - pin: " + boardStatus.getPin2());
                 if (alarmType.equals(C.ALARM_TYPE_TOILET) && boardStatus.getPin2() > C.TOILET_THRESHOLD) {
                     //toilet is available
                     fireNotification(context, "toilet");
