@@ -2,9 +2,11 @@ package com.labsfunware.tsp.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +74,7 @@ public class StatusFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 NotificationDialogFragment notificationDialogFragment = new NotificationDialogFragment();
-                notificationDialogFragment.show(getFragmentManager(), "notifDialog");
+                notificationDialogFragment.show(getFragmentManager(), C.TAG_NOTIFICATION_DIALOG);
             }
         });
 
@@ -88,7 +90,7 @@ public class StatusFragment extends Fragment {
 
     public void loadStatus() {
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("https://agent.electricimp.com")
+                .setEndpoint(TSPClient.API_ENDPOINT)
                 .build();
 
         TSPClient tspClient = restAdapter.create(TSPClient.class);
@@ -97,7 +99,8 @@ public class StatusFragment extends Fragment {
             public void success(BoardStatus boardStatus, Response response) {
                 TextView toilet = (TextView) mView.findViewById(R.id.toilet);
                 LinearLayout toiletLayout = (LinearLayout) mView.findViewById(R.id.toilet_ll);
-                if (boardStatus.getPin2() > C.TOILET_THRESHOLD) {
+
+                if (boardStatus.getStall() > C.TOILET_THRESHOLD) {
                     toilet.setText("VACANT");
                     toiletLayout.setBackgroundColor(Color.GREEN);
                 } else {
@@ -108,13 +111,12 @@ public class StatusFragment extends Fragment {
 
                 TextView urinal = (TextView) mView.findViewById(R.id.urinal);
                 LinearLayout urinalLayout = (LinearLayout) mView.findViewById(R.id.urinal_ll);
-                if (boardStatus.getPin1() > C.URINAL_THRESHOLD) {
+                if (boardStatus.getUrinal() > C.URINAL_THRESHOLD) {
                     urinal.setText("VACANT");
                     urinalLayout.setBackgroundColor(Color.GREEN);
                 } else {
                     urinal.setText("OCCUPIED");
                     urinalLayout.setBackgroundColor(Color.RED);
-
                 }
                 urinal.append(" (" + boardStatus.getUrinal() + ")");
             }
@@ -125,8 +127,8 @@ public class StatusFragment extends Fragment {
             }
         });
 
-        mHandler.postDelayed(refreshStatus, C.DEFAULT_STATUS_REFRESH);
-
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mHandler.postDelayed(refreshStatus, prefs.getLong(C.KEY_STATUS_REFRESH, C.DEFAULT_STATUS_REFRESH));
     }
 
     private Runnable refreshStatus = new Runnable() {

@@ -20,6 +20,8 @@ public class BoardStatus {
         return getPin2();
     }
 
+    public int getLights() { return getPin1(); }
+
     public int getPin1() {
         return Integer.valueOf(pin1);
     }

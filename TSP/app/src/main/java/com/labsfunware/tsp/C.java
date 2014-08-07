@@ -18,8 +18,13 @@ public final class C {
 
     public static final String KEY_ALARM_TYPE_PREF = "alarm_type";
     public static final String KEY_ALARM_RUNNING_PREF = "alarm_running";
+    public static final String KEY_STATUS_REFRESH = "key_status_refresh";
+    public static final String KEY_ALARM_REFRESH = "key_alarm_refresh";
+
     public static final String ALARM_TYPE_URINAL = "urinal";
     public static final String ALARM_TYPE_TOILET = "toilet";
+
+    public static final String TAG_NOTIFICATION_DIALOG = "notif_dialog";
 
     private C() {
     }

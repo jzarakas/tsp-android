@@ -27,8 +27,11 @@ public class AlarmController extends BroadcastReceiver {
 
         Log.d("ANOTIF", "setting alarm!");
 
+        long duration = System.currentTimeMillis() + PreferenceManager.getDefaultSharedPreferences(c)
+                            .getLong(C.KEY_ALARM_REFRESH, C.DEFAULT_ALARM_REFRESH);
+
         AlarmManager am = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + C.DEFAULT_ALARM_REFRESH, getPendingIntent(c));
+        am.set(AlarmManager.RTC_WAKEUP, duration, getPendingIntent(c));
     }
 
     public static void cancelAlarm(Context c) {
@@ -55,7 +58,7 @@ public class AlarmController extends BroadcastReceiver {
         }
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("https://agent.electricimp.com")
+                .setEndpoint(TSPClient.API_ENDPOINT)
                 .build();
 
         TSPClient tspClient = restAdapter.create(TSPClient.class);
@@ -94,6 +97,7 @@ public class AlarmController extends BroadcastReceiver {
         notif.setContentText("The " + alarmType + " is available!");
         notif.setSmallIcon(R.drawable.ic_launcher);
         notif.setDefaults(Notification.DEFAULT_ALL);
+        notif.setTicker("The " + alarmType + " is available!");
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(0, notif.build());
 
