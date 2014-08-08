@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 
 import com.labsfunware.tsp.AlarmController;
 import com.labsfunware.tsp.C;
-import com.labsfunware.tsp.R;
 
 /**
  * Created by james on 8/7/14.
